@@ -7,7 +7,7 @@ LONG_DESCRIPTION = ''
 # Setting up
 setup(
        # the name must match the folder name 'verysimplemodule'
-        name="boring_stonks_py", 
+        name="boringstonks", 
         version=VERSION,
         author="Kevin Per",
         author_email="kevin.per@protonmail.com",
