@@ -51,3 +51,14 @@ def getStocksByTradingSymbol(syms, query, access_token, periods = 0, config = de
     sym_str = ','.join(["\\\"" + str(elem) + "\\\"" for elem in syms])
     mod_query = '{"query": "{ getStocksByTradingSymbol(sym: [%s], periods: %d) { %s } } "}' % (sym_str, periods, query)
     return handle_req(config, access_token, mod_query, 'getStocksByTradingSymbol') 
+
+def getLastOhlcBySymbol(sym, query, access_token, periods = 0, config = defaultConfig):
+    mod_query = '{"query": "{ getLastOhlcBySymbol(sym: %s, periods: %d) { %s } } "}' % ("\\\"" + sym + "\\\"", periods, query)
+    return handle_req(config, access_token, mod_query, 'getLastOhlcBySymbol') 
+
+def getLastOhlcByCIK(cik, query, access_token, periods = 0, config = defaultConfig):
+    mod_query = '{"query": "{ getLastOhlcByCIK(sym: %s, periods: %d) { %s } } "}' % ("\\\"" + cik + "\\\"", periods, query)
+    return handle_req(config, access_token, mod_query, 'getLastOhlcByCIK') 
+
+
+
