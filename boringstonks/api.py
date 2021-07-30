@@ -8,6 +8,26 @@ defaultConfig = dict()
 defaultConfig['api'] = 'https://boringstonks.com/graphql'
 defaultConfig['timeout'] = 50
 
+def handle(config, access_token, mod_query, key):
+    headers = {'Content-Type': 'application/json', 'Access-Token': access_token}
+    x = requests.post(config['api'], data=mod_query, timeout=config['timeout'], headers=headers)
+    if x.status_code == 200:
+        if 'data' not in x.json():
+            print(x.content)
+            print("Cannot find data key")
+            return
+
+        stocks = x.json()['data'][key]
+        if stocks is not None:
+            return stocks 
+        else:
+            return dict()
+    else:
+        print(x.content)
+        print("Status code was not 200")
+        return
+
+
 def handle_req(config, access_token, mod_query, key):
     headers = {'Content-Type': 'application/json', 'Access-Token': access_token}
     x = requests.post(config['api'], data=mod_query, timeout=config['timeout'], headers=headers)
@@ -52,13 +72,10 @@ def getStocksByTradingSymbol(syms, query, access_token, periods = 0, config = de
     mod_query = '{"query": "{ getStocksByTradingSymbol(sym: [%s], periods: %d) { %s } } "}' % (sym_str, periods, query)
     return handle_req(config, access_token, mod_query, 'getStocksByTradingSymbol') 
 
-def getLastOhlcBySymbol(sym, query, access_token, periods = 0, config = defaultConfig):
-    mod_query = '{"query": "{ getLastOhlcBySymbol(sym: %s, periods: %d) { %s } } "}' % ("\\\"" + sym + "\\\"", periods, query)
-    return handle_req(config, access_token, mod_query, 'getLastOhlcBySymbol') 
+def getLastOhlcBySymbol(sym, query, access_token, config = defaultConfig):
+    mod_query = '{"query": "{ getLastOhlcBySymbol(sym: %s) { %s } } "}' % ("\\\"" + sym + "\\\"", query)
+    return handle(config, access_token, mod_query, 'getLastOhlcBySymbol') 
 
-def getLastOhlcByCIK(cik, query, access_token, periods = 0, config = defaultConfig):
-    mod_query = '{"query": "{ getLastOhlcByCIK(sym: %s, periods: %d) { %s } } "}' % ("\\\"" + cik + "\\\"", periods, query)
-    return handle_req(config, access_token, mod_query, 'getLastOhlcByCIK') 
-
-
-
+def getLastOhlcByCIK(cik, query, access_token, config = defaultConfig):
+    mod_query = '{"query": "{ getLastOhlcByCIK(sym: %s) { %s } } "}' % ("\\\"" + cik + "\\\"", query)
+    return handle(config, access_token, mod_query, 'getLastOhlcByCIK') 

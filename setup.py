@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-VERSION = '0.0.7' 
+VERSION = '0.0.10' 
 DESCRIPTION = 'API client for boring stonks'
 
 # Setting up
