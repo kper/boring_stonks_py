@@ -52,7 +52,7 @@ def handle_req(config, access_token, mod_query, key, periods):
 
             columns = ["balanceSheet", "incomeStatement", "cashflowStatement"]
             columns_to_delete = []
-            for i in range(0, periods):
+            for i in range(0, periods + 1):
                 for j in columns:
                     columns_to_delete.append(f'periods_{i}_{j}')
 
